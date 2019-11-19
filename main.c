@@ -21,23 +21,23 @@ void    generate_keys                   (mpz_t d,       mpz_t e,        mpz_t n,
 void    possible_keys                   (mpz_t d,       mpz_t e,        mpz_t n,        int bitsize);
 
 int main(void) {
-	mpz_t d, e, n;
-	mpz_init(d); mpz_init(e); mpz_init(n);
+    mpz_t d, e, n;
+    mpz_init(d); mpz_init(e); mpz_init(n);
 
-	int choice, quit = 0;
+    int choice, quit = 0;
 
-	while(quit != 1) {
-		printf("\n-- Meny --\n");
-		printf("1. Encrypt file\n");
-		printf("2. Decrypt file\n");
-		printf("3. Quit\n");
-		printf("> ");
-		scanf("%d", &choice);
-		fflush(stdin);
+    while(quit != 1) {
+        printf("\n-- Meny --\n");
+        printf("1. Encrypt file\n");
+        printf("2. Decrypt file\n");
+        printf("3. Quit\n");
+        printf("> ");
+        scanf("%d", &choice);
+        fflush(stdin);
 		
-		switch(choice) {
+        switch(choice) {
             case 1:
-				encrypt_to_file(d, e, n);
+                encrypt_to_file(d, e, n);
                 break;
             case 2:
                 decrypt_to_file(d, e, n);
@@ -47,9 +47,9 @@ int main(void) {
                 break;
             default:
                 printf("\nChoose a number between 1-3.\n\n");
-		}
-	}
-	return 0;
+        }
+    }
+    return 0;
 }
 
 void encrypt_to_file(mpz_t d, mpz_t e, mpz_t n) {
@@ -98,8 +98,8 @@ void encrypt_to_file(mpz_t d, mpz_t e, mpz_t n) {
 void decrypt_to_file(mpz_t d, mpz_t e, mpz_t n) {
     FILE *file;
     mpz_t line_convert; mpz_init(line_convert);
-	int line_size;
-	char file_name_to[MAX_FILE], file_name_from[MAX_FILE];
+    int line_size;
+    char file_name_to[MAX_FILE], file_name_from[MAX_FILE];
 
     /* MAKE SURE THEY FIND THE KEYS ***/
     if(get_keys_from_file(d, e, n) == 1) {
@@ -159,7 +159,6 @@ int get_keys_from_file(mpz_t d, mpz_t e, mpz_t n) {
     char file_name[MAX_FILE];
     puts("File with keys:");
     scanf("%s", file_name);
-
 
     if((file = fopen(file_name, "r")) == NULL) {
         puts("\nCannot open file. (returning...) ");
@@ -232,10 +231,10 @@ void possible_keys(mpz_t d, mpz_t e, mpz_t n, int bitsize) {
     mpz_t max, max_half_bitsize, prime1, prime2, tn;
 
     /* COMPUTE RANDOM PRIME X2 ***/
-	mpz_init(max); mpz_init(max_half_bitsize); mpz_init(prime1); mpz_init(prime2);
+    mpz_init(max); mpz_init(max_half_bitsize); mpz_init(prime1); mpz_init(prime2);
 
-	mpz_ui_pow_ui(max, 2, bitsize);
-	mpz_ui_pow_ui(max_half_bitsize, 2, (bitsize / 2));
+    mpz_ui_pow_ui(max, 2, bitsize);
+    mpz_ui_pow_ui(max_half_bitsize, 2, (bitsize / 2));
 
     gmp_randstate_t rand_state;
     gmp_randinit_default(rand_state);
@@ -262,8 +261,9 @@ void possible_keys(mpz_t d, mpz_t e, mpz_t n, int bitsize) {
     /* e IS COMPRIME TO totient(n). IN THIS CASE JUST AN ORDINARY PRIME. NICE ***/
     mpz_urandomm(e, rand_state, max_half_bitsize);
     while(mpz_probab_prime_p(e, 100) == 0)
-        mpz_urandomm(e, rand_state, max_half_bitsize);
+    mpz_urandomm(e, rand_state, max_half_bitsize);
 
     /* COMPUTE d; de = 1 mod(t(n)) ***/
     mpz_invert(d, e, tn); // compute the invers of e % tn. NOTE! d could == 0. somethimes d dosent exist...
 }
+
